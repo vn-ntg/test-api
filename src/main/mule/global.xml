@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="Application_HTTP_Listener" doc:name="HTTP Listener config" doc:id="89b48ae9-3b44-416a-98e2-ab82396ed46d" basePath="/app" >
+		<http:listener-connection host="0.0.0.0" port="${http.port}" />
+	</http:listener-config>
+	<global-property doc:name="Global Property" doc:id="a13c4785-e467-48d2-8c68-ed67b10f8dce" name="env" value="local" />
+	<configuration-properties doc:name="Configuration properties" doc:id="17c06f57-b30b-4322-a7ce-7518ad9e6119" file="application-${env}.yaml" />
+	<http:request-config name="API_B_HTTP_Request_Configuration" doc:name="HTTP Request configuration" doc:id="2f2fecb4-3886-49b3-ab3c-8c9a63678903" basePath="${apis.b.basePath}" >
+		<http:request-connection protocol="${apis.b.protocol}" host="${apis.b.host}" port="${apis.b.port}" connectionIdleTimeout="${apis.b.timeout}" />
+	</http:request-config>
+	<http:request-config name="Externo" doc:name="HTTP Request configuration" doc:id="b9009b7d-3abe-425b-bbc7-b9eb8e4fbe2b">
+		<http:request-connection connectionIdleTimeout="10000" />
+	</http:request-config>
+</mule>

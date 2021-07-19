@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="test-apiFlow" doc:id="49a0f850-8fb3-4669-80ae-a4536a6c4077" >
+		<http:listener doc:name="Listener" doc:id="7573d2db-50c9-415f-84c2-0a77109d4709" config-ref="Application_HTTP_Listener" path="/api-a"/>
+		<logger level="INFO" doc:name="Logger" doc:id="499a6c01-c4f1-4bd1-9429-f3c5d789c9b7" message="Hola, soy la aplciación A y voy a llamar a la B"/>
+		<http:request method="${apis.b.verb}" doc:name="Request" doc:id="cec45aeb-6992-4ae1-817c-c7616c13b959" config-ref="API_B_HTTP_Request_Configuration" path="${apis.b.path}">
+			<http:body ><![CDATA[#[%dw 2.0
+output application/json
+---
+{
+	"probando": "test"
+}]]]></http:body>
+		</http:request>
+	</flow>
+	<flow name="Copy_of_test-apiFlow" doc:id="f2f23eb9-1cc8-409d-8727-01f594c0a515" >
+		<http:listener doc:name="Copy_of_Listener" doc:id="d71a0504-651a-4a18-9208-7954726b2444" config-ref="Application_HTTP_Listener" path="/connection" />
+		<logger level="INFO" doc:name="Copy_of_Logger" doc:id="1414b583-fab5-4ffc-b6c5-c6a59230bf5b" message="Hola, soy la aplciación A y voy a llamar a la B" />
+		<http:request doc:name="Copy_of_Request" doc:id="4483423e-539f-4dab-ad0f-2684f4c7d306" config-ref="Externo" url="#[payload.url]" method="#[payload.verb]">
+			<http:body ><![CDATA[#[%dw 2.0
+output application/json
+---
+payload.data]]]></http:body>
+		</http:request>
+	</flow>
+</mule>
